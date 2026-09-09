@@ -1,6 +1,4 @@
-# I... am README......
-
-Son son son sahur tung tung tung sahur tralelliroloolwaod Tralalallala
-Tung tung tung... sahur.
-
-Why did i do this
+> # hi
+> i dont write blogs
+> Yeah
+> thanks for watching dont forget to like sub and hit that comment button or something
