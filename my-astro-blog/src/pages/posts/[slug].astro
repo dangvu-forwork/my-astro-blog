@@ -1,0 +1,78 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import AuthorBio from "../../components/AuthorBio.astro";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+	const posts = await getCollection("blog");
+
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const author = await getEntry(post.data.author);
+const { Content } = await render(post);
+---
+
+<Layout title={post.data.title}>
+	<main>
+		<article>
+			<header>
+				<p class="eyebrow">{post.data.pubDate.toLocaleDateString("en-US", { dateStyle: "long" })}</p>
+				<h1>{post.data.title}</h1>
+				<p class="description">{post.data.description}</p>
+			</header>
+			<div class="content">
+				<Content />
+			</div>
+			{author && <AuthorBio author={author.data} />}
+		</article>
+	</main>
+</Layout>
+
+<style>
+	main {
+		padding: 5rem 1.25rem;
+	}
+
+	article {
+		max-width: 720px;
+		margin: 0 auto;
+	}
+
+	header {
+		margin-bottom: 3rem;
+	}
+
+	h1 {
+		max-width: 680px;
+		margin: 0.5rem 0 1rem;
+		font-size: clamp(2.5rem, 7vw, 4.5rem);
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
+	.eyebrow {
+		margin: 0;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #3c765d;
+	}
+
+	.description {
+		margin: 0;
+		font-size: 1.2rem;
+		line-height: 1.6;
+		color: #53645d;
+	}
+
+	.content {
+		font-size: 1.1rem;
+		line-height: 1.8;
+	}
+</style>

@@ -1,0 +1,87 @@
+---
+interface Props {
+	author: {
+		name: string;
+		bio: string;
+		avatar: string;
+		socialLinks: {
+			label: string;
+			url: string;
+		}[];
+	};
+}
+
+const { author } = Astro.props;
+---
+
+<aside class="author-bio" aria-labelledby="author-heading">
+	<img src={author.avatar} alt={`Portrait of ${author.name}`} width="80" height="80" />
+	<div>
+		<p class="eyebrow">Written by</p>
+		<h2 id="author-heading">{author.name}</h2>
+		<p>{author.bio}</p>
+		<nav aria-label={`${author.name}'s social links`} class="social-links">
+			{author.socialLinks.map((link) => <a href={link.url}>{link.label}</a>)}
+		</nav>
+	</div>
+</aside>
+
+<style>
+	.author-bio {
+		display: flex;
+		gap: 1.25rem;
+		align-items: center;
+		margin-top: 4rem;
+		padding-top: 2rem;
+		border-top: 1px solid #cbd5d1;
+	}
+
+	.author-bio img {
+		flex: 0 0 auto;
+		border-radius: 50%;
+		object-fit: cover;
+		background: #dce9e3;
+	}
+
+	.author-bio h2,
+	.author-bio p {
+		margin: 0;
+	}
+
+	.author-bio h2 {
+		font-size: 1.25rem;
+	}
+
+	.author-bio h2 a {
+		color: inherit;
+	}
+
+	.author-bio p:last-child {
+		margin-top: 0.45rem;
+		line-height: 1.6;
+		color: #53645d;
+	}
+
+	.social-links {
+		display: flex;
+		gap: 0.9rem;
+		margin-top: 0.75rem;
+		font-size: 0.9rem;
+		font-weight: 700;
+	}
+
+	.eyebrow {
+		margin-bottom: 0.2rem !important;
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #3c765d;
+	}
+
+	@media (max-width: 520px) {
+		.author-bio {
+			align-items: flex-start;
+		}
+	}
+</style>
