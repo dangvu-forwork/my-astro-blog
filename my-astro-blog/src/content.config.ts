@@ -1,4 +1,5 @@
-import { defineCollection, reference, z } from "astro:content";
+import { defineCollection, reference } from "astro:content";
+import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 const blog = defineCollection({
@@ -19,7 +20,7 @@ const authors = defineCollection({
 		avatar: z.string(),
 		socialLinks: z.array(z.object({
 			label: z.string(),
-			url: z.string().url(),
+			url: z.url(),
 		})),
 	}),
 });
