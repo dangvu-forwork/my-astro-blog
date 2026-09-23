@@ -6,6 +6,9 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: my-astro-blog # Change the working directory, since npm doesn't really run from the root
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
@@ -14,10 +17,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: 'npm' # Caches node_modules for high-speed runs
+          cache: 'npm'
+          cache-dependency-path: my-astro-blog/package-lock.json # Custom cache here, since all these eval steps will still run from the root even when working directory is listed above.
 
       - name: Install Project Dependencies
-        run: npm ci # Clean, deterministic install from package-lock.json
+        run: npm ci
 
       - name: Run Static Analysis & Tests
         run: |
