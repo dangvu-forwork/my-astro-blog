@@ -11,7 +11,7 @@ jobs:
         working-directory: my-astro-blog # Change the working directory, since npm doesn't really run from the root
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node.js Runtime
         uses: actions/setup-node@v4
