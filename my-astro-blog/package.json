@@ -11,13 +11,13 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "test": "vitest",
+    "test:unit": "vitest",
     "lint": "eslint ."
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
     "astro": "^7.3.3",
-    "typescript": "^7.0.2"
+    "typescript": "^5.9.2"
   },
   "allowScripts": {
     "esbuild": true
