@@ -13,9 +13,9 @@ jobs:
       - name: Setup Node.js Runtime
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm' # Caches node_modules for high-speed runs
-          
+
       - name: Install Project Dependencies
         run: npm ci # Clean, deterministic install from package-lock.json
 
