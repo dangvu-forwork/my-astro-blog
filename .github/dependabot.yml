@@ -1,0 +1,14 @@
+# .github/dependabot.yml
+version: 2
+updates:
+  # 1. GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/my-astro-blog"
+    schedule:
+      interval: "weekly"
+
+  # 2. Node.js (npm / yarn / pnpm)
+  - package-ecosystem: "npm"
+    directory: "/my-astro-blog"
+    schedule:
+      interval: "daily"
