@@ -26,6 +26,9 @@ jobs:
       - name: Astro Build for distribution folder
         run: npm run build
 
+      - name: Folder Switch (to AWS CDK)
+        run: cd cdk && npm ci
+
       - name: Config AWS Certificate
         uses: aws-actions/configure-aws-credentials@v4
         with:
