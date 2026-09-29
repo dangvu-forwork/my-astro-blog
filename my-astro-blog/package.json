@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "test:unit": "vitest",
+    "test:unit": "vitest run unittests",
     "lint": "eslint ."
   },
   "dependencies": {
