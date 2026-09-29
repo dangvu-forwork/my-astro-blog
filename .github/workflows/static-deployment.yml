@@ -24,7 +24,12 @@ jobs:
       - name: Install Project + CDK Dependencies
         run: npm ci
 
+      - name: Install Astro Dependencies
+        working-directory: my-astro-blog
+        run: npm ci
+
       - name: Astro Build for distribution folder
+        working-directory: my-astro-blog
         run: npm run build
 
       - name: Config AWS Certificate
