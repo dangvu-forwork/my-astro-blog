@@ -5,7 +5,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "sitelink": "aws cloudfront get-distribution --id E3RP004EGGETG --query \"join('', ['https://', Distribution.DomainName])\" --output text"
   },
   "devDependencies": {
     "@swc/core": "^1.15.0",
