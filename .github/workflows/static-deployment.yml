@@ -6,6 +6,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: AWS CDK
     defaults:
       run:
         working-directory: my-astro-blog/cdk
@@ -23,11 +24,13 @@ jobs:
       - name: Install Project + CDK Dependencies
         run: npm ci
 
-      - name: Astro Build for distribution folder
-        run: npm run build
+      - name: Install Astro Dependencies
+        working-directory: my-astro-blog
+        run: npm ci
 
-      - name: Folder Switch (to AWS CDK)
-        run: cd cdk && npm ci
+      - name: Astro Build for distribution folder
+        working-directory: my-astro-blog
+        run: npm run build
 
       - name: Config AWS Certificate
         uses: aws-actions/configure-aws-credentials@v4
