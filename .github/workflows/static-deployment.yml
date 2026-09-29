@@ -1,0 +1,37 @@
+name: Deploy Static Site (feat. AWS Cloud Dev Kit)
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: my-astro-blog/cdk
+    steps:
+      - name: Checkout on Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime...
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: my-astro-blog/cdk/package-lock.json
+
+      - name: Install Project + CDK Dependencies
+        run: npm ci
+
+      - name: Astro Build for distribution folder
+        run: npm run build
+
+      - name: Config AWS Certificate
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
+      - name: Deploy Infrastructure & Assets with AWS CDK
+        run: npx cdk deploy --require-approval never
