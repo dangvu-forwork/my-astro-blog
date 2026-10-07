@@ -28,6 +28,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Verify AWS account and ECS service-linked role
+        run: |
+          aws sts get-caller-identity
+          aws iam get-role --role-name AWSServiceRoleForECS --query Role.Arn --output text
+
       - name: Ensure ECR repository exists (Create it, if not)
         run: |
           aws ecr describe-repositories --repository-names "$ECR_REPOSITORY" --region "$AWS_REGION" >/dev/null 2>&1 || \
