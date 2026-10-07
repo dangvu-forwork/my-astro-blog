@@ -1,35 +1,38 @@
 ---
-import { getCollection, getEntry, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import AuthorBio from "../../components/AuthorBio.astro";
 import Layout from "../../layouts/Layout.astro";
 
-export async function getStaticPaths() {
-	const posts = await getCollection("blog");
+const { slug } = Astro.params;
+const post = slug ? await getEntry("blog", slug) : undefined;
 
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: { post },
-	}));
+if (!post) {
+	Astro.response.status = 404;
 }
 
-const { post } = Astro.props;
-const author = await getEntry(post.data.author);
-const { Content } = await render(post);
+const author = post ? await getEntry(post.data.author) : undefined;
+const Content = post ? (await render(post)).Content : undefined;
 ---
 
-<Layout title={post.data.title}>
+<Layout title={post?.data.title ?? "Post not found"}>
 	<main>
-		<article>
-			<header>
-				<p class="eyebrow">{post.data.pubDate.toLocaleDateString("en-US", { dateStyle: "long" })}</p>
-				<h1>{post.data.title}</h1>
-				<p class="description">{post.data.description}</p>
-			</header>
-			<div class="content">
-				<Content />
-			</div>
-			{author && <AuthorBio author={author.data} />}
-		</article>
+		{post && Content ? (
+			<article>
+				<header>
+					<p class="eyebrow">{post.data.pubDate.toLocaleDateString("en-US", { dateStyle: "long" })}</p>
+					<h1>{post.data.title}</h1>
+					<p class="description">{post.data.description}</p>
+				</header>
+				<div class="content">
+					<Content />
+				</div>
+				{author && <AuthorBio author={author.data} />}
+			</article>
+		) : (
+			<article>
+				<h1>Post not found</h1>
+			</article>
+		)}
 	</main>
 </Layout>
 
