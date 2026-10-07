@@ -57,8 +57,8 @@ jobs:
         with:
           service-name: my-astro-blog
           image: ${{ steps.login-ecr.outputs.registry }}/my-astro-blog:${{ github.sha }}
-          execution-role-arn: ${{ vars.ECS_EXECUTION_ROLE_ARN }}
-          infrastructure-role-arn: ${{ vars.ECS_INFRASTRUCTURE_ROLE_ARN }}
+          execution-role-arn: ${{ secrets.ECS_EXECUTION_ROLE_ARN }}
+          infrastructure-role-arn: ${{ secrets.ECS_INFRASTRUCTURE_ROLE_ARN }}
           container-port: 4321
           environment-variables: |
             [
