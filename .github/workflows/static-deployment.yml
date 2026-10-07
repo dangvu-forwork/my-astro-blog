@@ -2,6 +2,7 @@ name: Deploy Static Site (feat. AWS Cloud Dev Kit)
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
