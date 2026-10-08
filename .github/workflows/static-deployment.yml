@@ -2,10 +2,12 @@ name: Deploy Static Site (feat. AWS Cloud Dev Kit)
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: AWS CDK
     defaults:
       run:
         working-directory: my-astro-blog/cdk
@@ -23,7 +25,12 @@ jobs:
       - name: Install Project + CDK Dependencies
         run: npm ci
 
+      - name: Install Astro Dependencies
+        working-directory: my-astro-blog
+        run: npm ci
+
       - name: Astro Build for distribution folder
+        working-directory: my-astro-blog
         run: npm run build
 
       - name: Config AWS Certificate
