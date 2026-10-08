@@ -51,8 +51,8 @@ jobs:
           context: ./my-astro-blog
           push: true
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/my-astro-blog:${{ github.sha }}
-            ${{ steps.login-ecr.outputs.registry }}/my-astro-blog:latest
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -60,8 +60,8 @@ jobs:
         id: deploy-express
         uses: aws-actions/amazon-ecs-deploy-express-service@v1
         with:
-          service-name: my-astro-blog
-          image: ${{ steps.login-ecr.outputs.registry }}/my-astro-blog:${{ github.sha }}
+          service-name: ${{ env.ECR_REPOSITORY }}
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
           execution-role-arn: ${{ secrets.ECS_EXECUTION_ROLE_ARN }}
           infrastructure-role-arn: ${{ secrets.ECS_INFRASTRUCTURE_ROLE_ARN }}
           container-port: 4321

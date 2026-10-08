@@ -60,7 +60,7 @@ jobs:
         id: deploy-express
         uses: aws-actions/amazon-ecs-deploy-express-service@v1
         with:
-          service-name: my-astro-blog
+          service-name: ${{ env.ECR_REPOSITORY }}
           image: ${{ steps.login-ecr.outputs.registry }}/my-astro-blog:${{ github.sha }}
           execution-role-arn: ${{ secrets.ECS_EXECUTION_ROLE_ARN }}
           infrastructure-role-arn: ${{ secrets.ECS_INFRASTRUCTURE_ROLE_ARN }}
