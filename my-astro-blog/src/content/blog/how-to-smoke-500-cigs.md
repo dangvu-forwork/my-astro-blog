@@ -5,7 +5,7 @@ pubDate: 2026-09-18
 author:
   slight-chainsmoker
 ---
-
+If you are reading this on dev server and not production... Dev-Server works.
 I don't know man light them all up and shove them in your mouth  
 Then inhale and breathe  
 Thanks for reading  
