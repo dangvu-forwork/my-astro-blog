@@ -1,10 +1,10 @@
-name: Publish Backend Image to ECR
+name: Deploying to Dev Server
 on:
   push:
-    branches: [main]
+    branches: [dev-server]
     paths:
       - "my-astro-blog/**"
-      - ".github/workflows/backend-deploy.yml"
+      - ".github/workflows/development.yml"
   workflow_dispatch:
 
 permissions:
@@ -16,7 +16,7 @@ jobs:
     environment: AWS CDK
     env:
       AWS_REGION: us-east-1
-      ECR_REPOSITORY: my-astro-blog
+      ECR_REPOSITORY: dev-server
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
