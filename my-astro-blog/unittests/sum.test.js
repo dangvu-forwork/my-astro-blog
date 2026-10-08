@@ -15,5 +15,5 @@ test("pukeko", () => {
 })
 
 test("quick mafs", () => {
-    expect(1 + 1).toEqual(3)
+    expect(1 + 1).not.toEqual(3)
 }) 

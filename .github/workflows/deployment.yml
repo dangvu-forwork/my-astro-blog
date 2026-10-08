@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths:
       - "my-astro-blog/**"
-      - ".github/workflows/backend-deploy.yml"
+      - ".github/workflows/deployment.yml"
   workflow_dispatch:
 
 permissions:
