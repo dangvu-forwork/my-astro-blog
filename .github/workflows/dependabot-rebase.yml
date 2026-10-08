@@ -1,0 +1,24 @@
+name: "Anti-Cl*nker main-basing"
+# ABSOLUTELY DO NOT CHECKOUT THE CODE. THIS CODE DOES NOT REQUIRE CHECKING OUT!!!!!!
+
+on:
+  pull_request_target:
+    types: [opened, edited]
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: Vankka/pr-target-branch-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          target: main
+          exclude: "dev-server /hotfix.*/" # Don't prevent going from development -> main, or hotfix(any) -> main
+          change-to: dev-server
+          comment: |
+              You are either a disgusting Dependabot base-rebasing clanker or a clueless soul.
+              Anyways, your work has been rebased to development to avoid breaking things in main.
+              You are welcome.
