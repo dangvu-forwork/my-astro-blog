@@ -6,9 +6,17 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      actions-patch-minor:
+        update-types: [ "patch", "minor" ]
 
   # 2. Node.js (npm / yarn / pnpm)
   - package-ecosystem: "npm"
-    directory: "/"
+    directories:
+    - "/my-astro-blog"
+    - "/my-astro-blog/*"
     schedule:
       interval: "daily"
+    groups:
+      astro-patch-minor:
+        update-types: [ "patch", "minor" ]
