@@ -12,8 +12,9 @@ permissions:
 
 jobs:
   publish:
+    if: ${{ github.event.pull_request.merged }} # Only run when merging a feature branch with the dev branch. Will test soon...
     runs-on: ubuntu-latest
-    environment: AWS CDK
+    environment: CDK Dev
     env:
       AWS_REGION: us-east-1
       ECR_REPOSITORY: dev-server
@@ -22,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -43,10 +44,10 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build and push image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./my-astro-blog
           push: true
