@@ -1,6 +1,6 @@
 name: Publish Backend Image to ECR
 on:
-  pull_request:
+  push:
     branches: [main]
     paths:
       - "my-astro-blog/**"
@@ -12,7 +12,6 @@ permissions:
 
 jobs:
   publish:
-    if: ${{ github.event.pull_request.merged }} # Only run when merging a feature branch with the dev branch. Will test soon...
     runs-on: ubuntu-latest
     environment: AWS CDK
     env:
