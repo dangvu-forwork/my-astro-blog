@@ -1,0 +1,27 @@
+---
+import Toolbar from "../components/Toolbar.astro"
+import Bootstrap from "../components/Bootstrap.astro";
+import "../assets/css/landing.css"
+const { title = "rkgk / content" } = Astro.props;
+
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<Toolbar transition:persist></Toolbar>
+        <div class="container bg-tint">
+		    <slot />
+        </div>
+
+        <Bootstrap></Bootstrap>
+	</body>
+</html>

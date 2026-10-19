@@ -1,0 +1,79 @@
+:root {
+    --primary-bg-color: rgba(255, 252, 232, 0.863);
+    --primary-interact: rgba(150, 147, 132, 0.863);
+    --primary-bd-color: rgba(75, 73, 60, 0.918);
+
+}
+
+@font-face {
+    font-family: Myungjo-Bold;
+    src: url("../fonts/KimjungchulMyungjo-Bold.ttf");
+}
+/**/
+
+#logo {
+    width: 50%;
+}
+
+.txt {
+    text-align: center;
+    font-family: Myungjo-Bold;
+    font-size: 20px;
+}
+
+.bg-tint {
+    background-color: var(--primary-bg-color);   
+    border-color: var(--primary-bd-color);
+}
+
+.container {
+    width: 50%;
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    
+    border: solid var(--primary-bd-color);
+    border-top: none;
+    border-bottom: none;
+
+    margin: 0 auto;
+    height: 100%;
+    min-height: 100vh;
+}
+
+.container * {
+    width: 100%;
+    max-width: 96%;
+} 
+
+body, main {
+    margin: 0;
+    height: 100%;
+    min-height: 100vh;
+}
+
+html {
+    margin: 0;
+    height: fit-content;
+    min-height: 100%;
+}
+
+* {
+    font-family: Myungjo-Bold;
+    margin-bottom: 0px;
+}
+
+article, header, .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+body {
+    background-image: url("/bg.jpg");
+    background-attachment: fixed;
+}

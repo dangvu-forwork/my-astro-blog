@@ -1,0 +1,43 @@
+---
+import { getEntry, render } from "astro:content";
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Contents.astro";
+
+const { slug } = Astro.params;
+const post = slug ? await getEntry("root", slug) : undefined;
+
+if (!post) {
+	Astro.response.status = 404;
+}
+
+const Content = post ? (await render(post)).Content : undefined;
+const image_title = post ? (post.data.image_title) : undefined
+---
+
+<Layout>
+	<main>
+		{post && Content ? (
+			<article>
+				{image_title ? (
+					<header>
+						<Image src={image_title} style={"width:auto"} alt={"image_title (NOT FOUND)"}></Image>
+					</header>
+				) : (
+					<header>
+						<h1>{post.data.title}</h1>
+						<p class="description">{post.data.description}</p>
+					</header>
+				)}
+				
+				<p style="color: blue;">//////////////////////////////////////////////////////////////////////////////</p>
+				<div class="content">
+					<Content />
+				</div>
+			</article>
+		) : (
+			<article>
+				<h1>item NOT FOUND</h1>
+			</article>
+		)}
+	</main>
+</Layout>

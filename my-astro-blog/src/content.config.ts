@@ -12,6 +12,16 @@ const blog = defineCollection({
 	}),
 });
 
+// items from the root, usually leading to other destinations below them
+const root = defineCollection({
+	loader: glob({ pattern: "*.md", base: "./src/content/"}),
+	schema: ({ image }) => z.object({
+		title: z.string(),
+		description: z.string(),
+		image_title: image().optional(),
+	}),
+})
+
 const authors = defineCollection({
 	loader: glob({ pattern: "**/*.md", base: "./src/content/authors" }),
 	schema: z.object({
@@ -25,4 +35,4 @@ const authors = defineCollection({
 	}),
 });
 
-export const collections = { blog, authors };
+export const collections = { blog, authors, root };
