@@ -15,19 +15,19 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/node": "^11.1.6",
-    "astro": "^7.3.3",
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/node": "^11.1.9",
+    "astro": "^7.4.2",
     "typescript": "^5.9.2"
   },
   "allowScripts": {
     "esbuild": true
   },
   "devDependencies": {
-    "@types/node": "^26.6.4",
-    "@typescript-eslint/parser": "^8.70.0",
-    "eslint": "^10.11.0",
+    "@types/node": "^26.6.5",
+    "@typescript-eslint/parser": "^8.72.0",
+    "eslint": "^10.13.0",
     "eslint-plugin-astro": "^3.2.1",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.5"
   }
 }
