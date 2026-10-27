@@ -1,0 +1,43 @@
+import * as cdk from 'aws-cdk-lib';
+import { Match, Template } from 'aws-cdk-lib/assertions';
+import { ContainerServiceStack } from '../lib/container-service-stack';
+
+test('creates a public ALB and configurable healthy Fargate service', () => {
+  const app = new cdk.App();
+  const stack = new ContainerServiceStack(app, 'TestContainerServiceStack', {
+    env: { account: '765332975113', region: 'us-east-1' },
+    repositoryName: 'test-repository',
+    imageTag: 'test-image-tag',
+    desiredCount: 2,
+    cpu: 512,
+    memoryLimitMiB: 1024,
+    healthCheckPath: '/custom-health',
+  });
+  const template = Template.fromStack(stack);
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+    Scheme: 'internet-facing',
+    Type: 'application',
+  });
+
+  template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
+    HealthCheckPath: '/custom-health',
+    Matcher: { HttpCode: '200' },
+  });
+
+  template.hasResourceProperties('AWS::ECS::Service', {
+    DesiredCount: 2,
+    LaunchType: 'FARGATE',
+  });
+
+  template.hasResourceProperties('AWS::ECS::TaskDefinition', {
+    Cpu: '512',
+    Memory: '1024',
+    RequiresCompatibilities: ['FARGATE'],
+    ContainerDefinitions: Match.arrayWith([Match.objectLike({ Image: Match.anyValue() })]),
+  });
+
+  const synthesizedTemplate = JSON.stringify(template.toJSON());
+  expect(synthesizedTemplate).toContain('test-repository');
+  expect(synthesizedTemplate).toContain('test-image-tag');
+});
