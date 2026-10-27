@@ -9,10 +9,18 @@
     font-family: Myungjo-Bold;
     src: url("../fonts/KimjungchulMyungjo-Bold.ttf");
 }
+
+@font-face {
+    font-family: Libre-Baskerville;
+    src: url("../fonts/LibreBaskerville-VariableFont_wght.ttf");
+}
 /**/
 
 #logo {
-    width: 50%;
+    width: 55%;
+    height: auto;
+    max-width: 512px;
+    max-height: 512px;
 }
 
 .txt {
@@ -48,6 +56,11 @@
     max-width: 96%;
 } 
 
+.rkgk-image {
+    max-width: 512px;
+    width: 50%;
+}
+
 body, main {
     margin: 0;
     height: 100%;
@@ -61,8 +74,9 @@ html {
 }
 
 * {
-    font-family: Myungjo-Bold;
+    font-family: Libre-Baskerville;
     margin-bottom: 0px;
+    
 }
 
 article, header, .content {
@@ -76,4 +90,42 @@ article, header, .content {
 body {
     background-image: url("/bg.jpg");
     background-attachment: fixed;
+}
+
+/* collection container */
+.collection-container {
+    padding: 20px 0;
+    background-color: rgba(255, 255, 255, 0.658);
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.collection-container ul {
+    padding-left: 10px;
+}
+
+.collection-container li {
+    padding-bottom: 10px;
+    list-style: none;
+}
+
+.collection-container a {
+    color: var(--primary-bd-color);
+}
+
+.collection-container p {
+    margin-top: 0px;
+}
+
+/* text */
+
+h1,h2,h3,h4,h5,h6,p,span {
+    margin-top: 0px;
+}
+
+.span-small {
+    font-size: x-small;
 }
