@@ -19,6 +19,10 @@ test('creates a public ALB and configurable healthy Fargate service', () => {
     Scheme: 'internet-facing',
     Type: 'application',
   });
+  expect(Object.keys(template.findResources('AWS::ElasticLoadBalancingV2::LoadBalancer')))
+    .toContain('BlogServiceLB2819D33B');
+  expect(Object.keys(template.findResources('AWS::EC2::VPC')))
+    .toContain('DevVpc4A77049E');
 
   template.hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
     HealthCheckPath: '/custom-health',

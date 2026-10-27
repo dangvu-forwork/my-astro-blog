@@ -24,6 +24,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 The stack outputs the HTTP website URL as `WebsiteUrl`. The current stack is HTTP-only; add an ACM certificate and HTTPS listener before using it for production.
 
+The `DevVpc`, `DevCluster`, and `BlogService` construct IDs are deliberately stable to preserve the existing `Dev-ContainerStack` CloudFormation logical IDs, including its ALB. Keep those IDs and the stack name unchanged when updating that deployment. CDK updates the existing ALB as part of the same stack; it does not search for or adopt unrelated load balancers.
+
 ### One-time account setup
 
 CDK must be bootstrapped once per account and region. From this directory, with AWS credentials for the account configured:
