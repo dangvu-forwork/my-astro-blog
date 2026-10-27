@@ -31,7 +31,7 @@ export class ContainerServiceStack extends cdk.Stack {
     }
 
     // Public Fargate tasks avoid NAT gateway costs; their security group only accepts app traffic from the ALB.
-    const vpc = new ec2.Vpc(this, 'ServiceVpc', {
+    const vpc = new ec2.Vpc(this, 'DevVpc', {
       maxAzs: 2,
       natGateways: 0,
       subnetConfiguration: [
@@ -42,10 +42,10 @@ export class ContainerServiceStack extends cdk.Stack {
       ],
     });
 
-    const cluster = new ecs.Cluster(this, 'ServiceCluster', { vpc });
-    const repository = ecr.Repository.fromRepositoryName(this, 'AppRepository', repositoryName);
+    const cluster = new ecs.Cluster(this, 'DevCluster', { vpc });
+    const repository = ecr.Repository.fromRepositoryName(this, 'BlogRepository', repositoryName);
 
-    const service = new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'AppService', {
+    const service = new ecsPatterns.ApplicationLoadBalancedFargateService(this, 'BlogService', {
       cluster,
       publicLoadBalancer: true,
       assignPublicIp: true,
