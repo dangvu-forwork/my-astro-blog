@@ -29,6 +29,7 @@ const posts = await lib.fetchCollection(collection);
 </div>
 
 <script>
+    
     document.querySelectorAll<HTMLElement>("[data-collection-search]").forEach((container) => {
         const searchInput = container.querySelector<HTMLInputElement>("[data-search-input]");
         const searchItems = container.querySelectorAll<HTMLElement>("[data-search-item]");
@@ -55,9 +56,9 @@ const posts = await lib.fetchCollection(collection);
 
     document.querySelectorAll<HTMLElement>("[data-collection-search]").forEach((container) => {
         const button = container.querySelector<HTMLButtonElement>("[data-random-post]");
+        const links = container.querySelectorAll<HTMLAnchorElement>("a.collection-result");
 
         button?.addEventListener("click", () => {
-            const links = container.querySelectorAll<HTMLAnchorElement>("a.collection-result");
             if (links.length === 0) return;
 
             const index = Math.floor(Math.random() * links.length);
