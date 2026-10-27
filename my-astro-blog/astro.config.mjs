@@ -2,10 +2,16 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 
+import mdx from '@astrojs/mdx';
+
 // https://astro.build/config
 export default defineConfig({
-    output: "server", // on-demand server rendering
-    adapter: node({
-        mode: 'standalone' // self-contained HTTP server, listening on a port apparently
-    })
+  // on-demand server rendering
+  output: "server",
+
+  adapter: node({
+      mode: 'standalone' // self-contained HTTP server, listening on a port apparently
+  }),
+
+  integrations: [mdx()]
 });
