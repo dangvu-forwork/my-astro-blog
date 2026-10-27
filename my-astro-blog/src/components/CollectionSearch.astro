@@ -1,0 +1,67 @@
+---
+import * as lib from "../lib/localLib"
+
+const { collection } = Astro.props;
+
+if (!collection){
+    console.warn(`Collection ${collection} was not found! A collection is like "content", "contemp", whatever.`);
+    return;
+}
+
+const posts = await lib.fetchCollection(collection);
+---
+
+<div class="collection-container" data-collection-search>
+    
+    <label>
+        <input type="search" name="collection-search" placeholder="search something!" data-search-input>
+        <button type="button" data-random-post>Random Post</button>
+    </label>
+    <ul>
+        {posts.filter((post) => post.id !== "landing").map((post) => (
+            <li data-search-item data-search-text={`${post.data.title} ${post.data.description} ${post.id}`}>
+                <a href={`/${collection}/${post.id}`} class="collection-result">{post.data.title}</a>
+                <p>{post.data.description}</p>
+            </li>
+        ))}
+    </ul>
+    <p data-empty-results hidden>couldn't find anything...</p>
+</div>
+
+<script>
+    document.querySelectorAll<HTMLElement>("[data-collection-search]").forEach((container) => {
+        const searchInput = container.querySelector<HTMLInputElement>("[data-search-input]");
+        const searchItems = container.querySelectorAll<HTMLElement>("[data-search-item]");
+        const emptyResults = container.querySelector<HTMLElement>("[data-empty-results]");
+
+        if (!searchInput || !emptyResults) {
+            return;
+        }
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim().toLocaleLowerCase();
+            let visibleItems = 0;
+
+            searchItems.forEach((item) => {
+                const text = item.dataset.searchText?.toLocaleLowerCase() ?? "";
+                const matches = text.includes(query);
+                item.hidden = !matches;
+                visibleItems += Number(matches);
+            });
+
+            emptyResults.hidden = visibleItems > 0;
+        });
+    });
+
+    document.querySelectorAll<HTMLElement>("[data-collection-search]").forEach((container) => {
+        const button = container.querySelector<HTMLButtonElement>("[data-random-post]");
+
+        button?.addEventListener("click", () => {
+            const links = container.querySelectorAll<HTMLAnchorElement>("a.collection-result");
+            if (links.length === 0) return;
+
+            const index = Math.floor(Math.random() * links.length);
+            window.location.assign(links[index].href);
+        });
+    });
+</script>

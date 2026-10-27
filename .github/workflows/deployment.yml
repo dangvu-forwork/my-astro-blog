@@ -7,6 +7,10 @@ on:
       - ".github/workflows/deployment.yml"
   workflow_dispatch:
 
+concurrency:
+  group: development-${{ github.ref }} # Runs for the same branch will be put into one concurrency group
+  cancel-in-progress: true # If something's already running, just cancel that run and prioritize this new one
+
 permissions:
   contents: read
 
@@ -27,11 +31,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-
-      - name: Verify AWS account and ECS service-linked role
-        run: |
-          aws sts get-caller-identity
-          aws iam get-role --role-name AWSServiceRoleForECS --query Role.Arn --output text
 
       - name: Ensure ECR repository exists (Create it, if not)
         run: |
