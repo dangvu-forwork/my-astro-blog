@@ -1,6 +1,7 @@
 ---
 import Toolbar from "../components/Toolbar.astro"
 import Bootstrap from "../components/Bootstrap.astro";
+import Style from "../assets/css/none.css?url";
 const { title = "rkgk / root" } = Astro.props;
 
 ---
@@ -13,6 +14,7 @@ const { title = "rkgk / root" } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href={Style}>
 		<title>{title}</title>
 	</head>
 	<body>
