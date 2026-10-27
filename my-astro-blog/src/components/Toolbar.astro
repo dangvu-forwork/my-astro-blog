@@ -1,6 +1,6 @@
 <div id="topnav" class="bg-tint is-open">
     <button id="topnav-open" type="button" aria-label="Toggle navigation" aria-expanded="false" class="bg-tint">
-        <p>&lt;</p> <!-- i had to use &lt to display the element < safely without error -->
+        <p style="margin-top: 0px;">&lt;</p> <!-- i had to use &lt to display the element < safely without error -->
     </button>
     <ul class="topnav-buttons">
         <img src="/rkgk_nav.png" id="nav-img">
@@ -10,6 +10,14 @@
                 <a href="/">main!</a>
                 <a href="/content/intro">about...</a>
                 <a href="/content/policy">policy?</a>
+            </div>
+        </li>
+
+        <li class="dropdown">
+            <button class="dropbtn">articles</button>
+            <div class="dropdown-content">
+                <a href="/contemp/landing">contemporary</a>
+                <a href="/pretemp/landing">pre-temporary</a>
             </div>
         </li>
     </ul>
@@ -178,7 +186,6 @@
         align-items: center;
         justify-content: center;
         
-        font-family: Myungjo-Bold;
         border: none;
         border-bottom: 2px solid var(--primary-bd-color);
     }
