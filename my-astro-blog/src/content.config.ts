@@ -1,38 +1,41 @@
-import { defineCollection, reference } from "astro:content";
+import { defineCollection, type SchemaContext } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
-const blog = defineCollection({
-	loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
-	schema: z.object({
-		title: z.string(),
-		description: z.string(),
-		pubDate: z.coerce.date(),
-		author: reference("authors"),
-	}),
-});
+import fs from "node:fs";
+import path from "node:path";
 
-// items from the root, usually leading to other destinations below them
-const root = defineCollection({
-	loader: glob({ pattern: "*.md", base: "./src/content/"}),
-	schema: ({ image }) => z.object({
-		title: z.string(),
-		description: z.string(),
-		image_title: image().optional(),
-	}),
+const markdownSchema = ({ image }: SchemaContext) => z.object({
+	title: z.string(),
+	description: z.string(),
+	layout: z.string().optional(),
+	image_title: image().optional(),
 })
 
-const authors = defineCollection({
-	loader: glob({ pattern: "**/*.md", base: "./src/content/authors" }),
-	schema: z.object({
-		name: z.string(),
-		bio: z.string(),
-		avatar: z.string(),
-		socialLinks: z.array(z.object({
-			label: z.string(),
-			url: z.url(),
-		})),
-	}),
-});
+const CONTENT_DIRECTORY = "./src/content"
 
-export const collections = { blog, authors, root };
+// 2. Initialize the collections registry with root fallback configuration
+const dynamicCollections: Record<string, any> = {
+  root: defineCollection({
+    loader: glob({ pattern: "*.{md,mdx}", base: CONTENT_DIRECTORY }),
+    schema: markdownSchema
+  })
+};
+
+// 3. Scan for subfolders and automatically build collections out of them
+if (fs.existsSync(CONTENT_DIRECTORY)) { // first line: if path exists check
+  fs.readdirSync(CONTENT_DIRECTORY, { withFileTypes: true }).forEach((file) => {
+    if (file.isDirectory()) { // only scan for directory files
+      const folderName = file.name;
+      
+      dynamicCollections[folderName] = defineCollection({
+        loader: glob({ pattern: "*.{md,mdx}", base: path.join(CONTENT_DIRECTORY, folderName) }),
+        schema: markdownSchema,
+      });
+    }
+  });
+
+  // so hopefully, i wont have to re-edit this again.
+}
+
+export const collections = dynamicCollections;
