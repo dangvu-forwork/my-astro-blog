@@ -1,0 +1,195 @@
+:root {
+    --primary-bg-color: rgba(255, 255, 255, 0.685);
+    --primary-interact: rgba(150, 147, 132, 0.863);
+    --primary-bd-color: rgba(41, 85, 173, 0.555);
+
+    --stroke-color: #4c7a7a85;
+    --secondary-bg-gradient: linear-gradient(to bottom, rgba(0, 0, 255, 0.774), rgba(83, 137, 255, 0.747));
+    --primary-bg-gradient-presence: linear-gradient(to bottom, rgb(151, 207, 245), rgba(252, 252, 252, 0.548));
+    --primary-bg-gradient: linear-gradient(to bottom, rgba(151, 207, 245, 0.774), rgba(252, 252, 252, 0.349));
+    --primary-bt-gradient: linear-gradient(to bottom, rgba(252, 252, 252, 0.774), rgba(198, 218, 252, 0.596));
+}
+
+/* Font Faces */
+@font-face {
+    font-family: Frutiger;
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/Frutiger.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: Frutiger-Bold;
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/Frutiger_bold.woff') format('woff');
+}
+
+/* Main*/
+
+html::after {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    display: block;
+    background: url("/src/assets/backgrounds/Frutiger.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    content: "";
+    left:   0;
+    top:    0;
+    z-index: -2;
+}
+
+.container {
+    background-image: var(--primary-bg-gradient);
+    border: solid 2px;
+    position: relative;
+
+    left: 10vw;
+    width: auto;
+    max-width: 80%;
+    height: auto;
+    padding: 15px;
+
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Article stuff*/
+.rkgk-article-header {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    background: var(--secondary-bg-gradient);
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    height: 4vh;
+    align-items: center;
+    
+}
+.rkgk-article-title{
+    margin: 0px;
+    display: none;
+}
+.rkgk-article-description {
+    margin: 0px;
+    margin-left: 10px;
+    font-family: Frutiger-Bold;
+    color: rgba(255, 255, 255, 0.63);
+}
+
+.rkgk-article-description::after{
+    display: inline-block;
+    position: absolute;
+    content: "?";
+
+    text-align: center;
+    left: 95%;
+    top: 10%;
+    vertical-align: middle;
+    background: var(--primary-bt-gradient);
+
+    border-radius: 2px;
+    border: solid var(--primary-bg-gradient) 1px;
+    height: 3vh;
+    width: 3vh;
+}
+/* Article stuff end*/
+.rkgk-text-shadow {
+    text-shadow: 2px 0 var(--stroke-color), -2px 0 var(--stroke-color), 0 2px var(--stroke-color), 0 -2px var(--stroke-color),
+               1px 1px var(--stroke-color), -1px -1px var(--stroke-color), 1px -1px var(--stroke-color), -1px 1px var(--stroke-color);
+}
+.rkgk-small-txt { font-size: x-small; }
+.rkgk-header { color: rgba(202, 244, 255, 0.938); }
+.rkgk-block {
+    background: rgba(255, 255, 255, .25);
+    border-radius: 5px;
+}
+.rkgk-img {
+    max-width: 95%;
+    max-height: auto;
+}
+
+.rkgk-button {
+    border-radius: 5px;
+    height: 4vh;
+    width: 4vh;
+    text-align: center;
+    background: var(--primary-bg-gradient-presence);
+}
+
+.rkgk_separator {
+    width: 100%;
+    height: 5vh;
+    filter: invert(1);
+}
+
+.rkgk-true-center {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    line-height: 1;
+}
+
+/* Custom Elements...*/
+#rkgk-bgm-bar {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+
+    width: 30vw;
+    text-align: center;
+    backdrop-filter: blur(10px);
+
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: solid rgb(229, 243, 252) 2px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#rkgk-bgm-bar input {
+    text-align: center;
+    margin-left: auto;
+}
+
+#rkgk-bgm-bar p {
+    font-family: Frutiger-Bold;
+    padding-left: 5%;
+}
+
+/* Fonts, colors, other customizations */
+p, a, button, .rkgk-apply-font, span {
+    font-family: Frutiger;
+}
+
+h1, h2, h3, h4, h5, h6, b, .rkgk-apply-font-bold {
+    font-family: Frutiger-Bold;
+}
+
+.margin-none {
+    margin: 0;
+}
+
+.bg-tint {
+    background-color: var(--primary-bg-color);   
+    border-color: var(--primary-bd-color);
+}
+
+/* scrollbar looks ugly.*/
+* {
+    scrollbar-width: none; 
+}
