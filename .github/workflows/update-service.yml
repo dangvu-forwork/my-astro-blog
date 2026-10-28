@@ -1,4 +1,4 @@
-name: Deploying to Dev Server
+name: Update Stack / Manual
 on:
   workflow_dispatch:
 
