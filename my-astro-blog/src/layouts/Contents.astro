@@ -1,0 +1,27 @@
+---
+import Toolbar from "../components/Toolbar.astro"
+import Bootstrap from "../components/Bootstrap.astro";
+import Style from "../assets/css/landing.css?url"; // importing regularly will make this eager and it will never go away
+const { title = "rkgk / content" } = Astro.props;
+
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" href="/rkgk_palette.png" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href={Style}>
+		<title>{title}</title>
+	</head>
+	<body>
+		<Toolbar transition:persist></Toolbar>
+        <div class="container bg-tint">
+		    <slot />
+        </div>
+
+        <Bootstrap></Bootstrap>
+	</body>
+</html>

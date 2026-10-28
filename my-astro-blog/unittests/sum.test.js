@@ -13,7 +13,3 @@ test("OMEGA FLOWERY", () => {
 test("pukeko", () => {
     expect("Pu" + "Keko").toEqual("PuKeko")
 })
-
-test("quick mafs", () => {
-    expect(1 + 1).not.toEqual(3)
-}) 
