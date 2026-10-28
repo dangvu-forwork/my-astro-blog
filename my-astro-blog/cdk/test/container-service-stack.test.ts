@@ -44,4 +44,35 @@ test('creates a public ALB and configurable healthy Fargate service', () => {
   const synthesizedTemplate = JSON.stringify(template.toJSON());
   expect(synthesizedTemplate).toContain('test-repository');
   expect(synthesizedTemplate).toContain('test-image-tag');
+
+  template.hasResourceProperties('AWS::Events::Rule', {
+    EventPattern: {
+      source: ['aws.ecr'],
+      'detail-type': ['ECR Image Action'],
+      detail: {
+        'action-type': ['PUSH'],
+        result: ['SUCCESS'],
+        'repository-name': ['test-repository'],
+        'image-tag': ['latest'],
+      },
+    },
+  });
+
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Runtime: 'python3.12',
+    Code: {
+      ZipFile: Match.stringLikeRegexp('forceNewDeployment=True'),
+    },
+  });
+
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: Match.arrayWith([
+        Match.objectLike({
+          Action: 'ecs:UpdateService',
+          Effect: 'Allow',
+        }),
+      ]),
+    },
+  });
 });
