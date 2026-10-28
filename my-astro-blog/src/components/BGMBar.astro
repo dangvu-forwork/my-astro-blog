@@ -7,25 +7,36 @@ const { title } = Astro.props;
 ---
 
 <div id="rkgk-bgm-bar" class="rkgk-apply-font bg-tint" >
-    <p>Now playing: {title}</p>
+    <p data-songname={title}>Paused Playback</p>
     <slot />
 
-    <input type="button" id="rkgk-bgm-stop" value="⏸" class="rkgk-button bg-tint rkgk-true-center" data-playing="1">
+    <input type="button" id="rkgk-bgm-stop" value="▶" class="rkgk-button bg-tint rkgk-true-center">
 </div>
 
 <script>
+  const bgmBar  = document.querySelector<HTMLDivElement>("#rkgk-bgm-bar")!
+  const bgmText = bgmBar?.querySelector<HTMLElement>("p")! // It's. Literally declared above. Therefore, it must exist.
+  
   const bgmStop = document.querySelector<HTMLInputElement>("#rkgk-bgm-stop")
   const bgMusic = document.querySelector<HTMLAudioElement>("#rkgk-bg-music")
 
   bgmStop?.addEventListener("click", () => {
+    if (!bgMusic) return
+
     if (bgmStop.hasAttribute("data-playing")) {
       bgmStop.removeAttribute("data-playing");
-    } else {
-      bgmStop.setAttribute("data-playing", "");
+      bgMusic.pause()
+      bgmStop.value = "▶"
+      bgmText.innerText = "Paused Playback"
+      return
     }
 
-    const isPlaying = bgmStop.hasAttribute("data-playing")
-    if (isPlaying){ bgMusic?.play() } else { bgMusic?.pause() }
-    bgmStop.value = isPlaying ? "⏸" : "▶"
+    bgMusic.play().then(() => {
+      bgmStop.setAttribute("data-playing", "")
+      bgmText.innerText = `Now playing: ${bgmText.dataset.songname}`
+      bgmStop.value = "⏸"
+    }).catch((error: unknown) => {
+      console.log("Playback failed", error)
+    })
   })
 </script>
