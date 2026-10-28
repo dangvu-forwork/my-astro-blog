@@ -19,11 +19,16 @@ const getAudioUrl = lib.fetchItemsInit(
 
 {
     (isBGM) ? (
-        <audio autoplay class="rkgk-sound" id="rkgk-bg-music" loop background-music>
+        <audio class="rkgk-sound" id="rkgk-bg-music" loop background-music>
             {sources.split(";").map((source) => (
                 <source src={getAudioUrl(source)} type={`audio/${source.split(".").pop()}`} />
             ))}
         </audio>
+        <script>
+            window.onload = function() {
+                document.querySelector<HTMLAudioElement>("#rkgk-bg-music")?.play();
+            }    
+        </script>
     ) : (
         <audio class="rkgk-sound">
             {sources.split(";").map((source) => (
