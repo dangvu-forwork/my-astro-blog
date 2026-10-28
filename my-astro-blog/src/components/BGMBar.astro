@@ -1,0 +1,31 @@
+---
+type Props = {
+  title: string;
+};
+
+const { title } = Astro.props;
+---
+
+<div id="rkgk-bgm-bar" class="rkgk-apply-font bg-tint" >
+    <p>Now playing: {title}</p>
+    <slot />
+
+    <input type="button" id="rkgk-bgm-stop" value="⏸" class="rkgk-button bg-tint rkgk-true-center" data-playing="1">
+</div>
+
+<script>
+  const bgmStop = document.querySelector<HTMLInputElement>("#rkgk-bgm-stop")
+  const bgMusic = document.querySelector<HTMLAudioElement>("#rkgk-bg-music")
+
+  bgmStop?.addEventListener("click", () => {
+    if (bgmStop.hasAttribute("data-playing")) {
+      bgmStop.removeAttribute("data-playing");
+    } else {
+      bgmStop.setAttribute("data-playing", "");
+    }
+
+    const isPlaying = bgmStop.hasAttribute("data-playing")
+    if (isPlaying){ bgMusic?.play() } else { bgMusic?.pause() }
+    bgmStop.value = isPlaying ? "⏸" : "▶"
+  })
+</script>
