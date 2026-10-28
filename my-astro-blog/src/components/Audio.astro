@@ -1,0 +1,34 @@
+---
+import * as lib from "../lib/localLib"
+
+type Props = {
+  sources: (string);
+  isBGM: boolean;
+};
+
+const { sources, isBGM } = Astro.props;
+
+const getAudioUrl = lib.fetchItemsInit(
+    import.meta.glob<string>("/src/assets/audio/*", {
+        eager: true,
+        query: "?url",
+        import: "default",
+    }),
+)
+---
+
+{
+    (isBGM) ? (
+        <audio class="rkgk-sound" id="rkgk-bg-music" loop background-music>
+            {sources.split(";").map((source) => (
+                <source src={getAudioUrl(source)} type={`audio/${source.split(".").pop()}`} />
+            ))}
+        </audio>
+    ) : (
+        <audio class="rkgk-sound">
+            {sources.split(";").map((source) => (
+                <source src={getAudioUrl(source)} type={`audio/${source.split(".").pop()}`} />
+            ))}
+        </audio>
+    )
+}

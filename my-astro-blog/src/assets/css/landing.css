@@ -1,0 +1,132 @@
+:root {
+    --primary-bg-color: rgba(255, 252, 232, 0.863);
+    --primary-interact: rgba(150, 147, 132, 0.863);
+    --primary-bd-color: rgba(75, 73, 60, 0.918);
+
+}
+
+@font-face {
+    font-family: Myungjo-Bold;
+    src: url("../fonts/KimjungchulMyungjo-Bold.ttf");
+}
+
+@font-face {
+    font-family: Libre-Baskerville;
+    src: url("../fonts/LibreBaskerville-VariableFont_wght.ttf");
+}
+/**/
+
+#logo {
+    width: 55%;
+    height: auto;
+    max-width: 512px;
+    max-height: 512px;
+}
+
+.txt {
+    text-align: center;
+    font-family: Myungjo-Bold;
+    font-size: 20px;
+}
+
+.bg-tint {
+    background-color: var(--primary-bg-color);   
+    border-color: var(--primary-bd-color);
+}
+
+.container {
+    width: 50%;
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    
+    border: solid var(--primary-bd-color);
+    border-top: none;
+    border-bottom: none;
+
+    padding-top: 3vh;
+    margin: 0 auto;
+    height: 100%;
+    min-height: 100vh;
+}
+
+.container * {
+    width: 100%;
+    max-width: 96%;
+} 
+
+.rkgk-image {
+    max-width: 512px;
+    width: 50%;
+}
+
+body, main {
+    margin: 0;
+    height: 100%;
+    min-height: 100vh;
+}
+
+html {
+    margin: 0;
+    height: fit-content;
+    min-height: 100%;
+}
+
+* {
+    font-family: Libre-Baskerville;
+    margin-bottom: 0px;
+    
+}
+
+article, header, .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+html {
+    background: url("/bg.jpg");
+    background-attachment: fixed;
+}
+
+/* collection container */
+.collection-container {
+    padding: 20px 0;
+    background-color: rgba(255, 255, 255, 0.658);
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.collection-container ul {
+    padding-left: 10px;
+}
+
+.collection-container li {
+    padding-bottom: 10px;
+    list-style: none;
+}
+
+.collection-container a {
+    color: var(--primary-bd-color);
+}
+
+.collection-container p {
+    margin-top: 0px;
+}
+
+/* text */
+
+h1,h2,h3,h4,h5,h6,p,span {
+    margin-top: 0px;
+}
+
+.span-small {
+    font-size: x-small;
+}

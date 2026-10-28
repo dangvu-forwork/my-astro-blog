@@ -1,0 +1,29 @@
+---
+import Toolbar from "../components/Toolbar.astro"
+import Style from "../assets/css/frutiger.css?url";
+import BGMHolder from "../components/BGMBar.astro"
+import Audio from "../components/Audio.astro"
+
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" href="/frutiger-person.png" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href={Style}>
+		<title>rkgk / Frutiger Aero...</title>
+	</head>
+	<body>
+		<Toolbar transition:persist></Toolbar>
+        <div class="container bg-tint">
+		    <slot />
+        </div>
+
+		<BGMHolder title="Yume 2kki OST - Lotus Waters">
+			<Audio sources="Yume 2kki OST Lotus Waters.mp3" isBGM />
+		</BGMHolder>
+	</body>
+</html>

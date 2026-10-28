@@ -7,6 +7,10 @@ on:
       - ".github/workflows/deployment.yml"
   workflow_dispatch:
 
+concurrency:
+  group: development-${{ github.ref }} # Runs for the same branch will be put into one concurrency group
+  cancel-in-progress: true # If something's already running, just cancel that run and prioritize this new one
+
 permissions:
   contents: read
 
@@ -28,11 +32,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Verify AWS account and ECS service-linked role
-        run: |
-          aws sts get-caller-identity
-          aws iam get-role --role-name AWSServiceRoleForECS --query Role.Arn --output text
-
+      # I have to delete my repositories sometimes, as they consume my free credits.
+      # I am running on a budget.
       - name: Ensure ECR repository exists (Create it, if not)
         run: |
           aws ecr describe-repositories --repository-names "$ECR_REPOSITORY" --region "$AWS_REGION" >/dev/null 2>&1 || \
@@ -42,42 +43,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Build and push image
-        uses: docker/build-push-action@v7
-        with:
-          context: ./my-astro-blog
-          push: true
-          tags: |
-            ${{ steps.login-ecr.outputs.registry }}/my-astro-blog:${{ github.sha }}
-            ${{ steps.login-ecr.outputs.registry }}/my-astro-blog:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Deploy to ECS Express Mode
-        id: deploy-express
-        uses: aws-actions/amazon-ecs-deploy-express-service@v1
-        with:
-          service-name: ${{ env.ECR_REPOSITORY }}
-          image: ${{ steps.login-ecr.outputs.registry }}/my-astro-blog:${{ github.sha }}
-          execution-role-arn: ${{ secrets.ECS_EXECUTION_ROLE_ARN }}
-          infrastructure-role-arn: ${{ secrets.ECS_INFRASTRUCTURE_ROLE_ARN }}
-          container-port: 4321
-          environment-variables: |
-            [
-              {"name":"HOST","value":"0.0.0.0"},
-              {"name":"PORT","value":"4321"}
-            ]
-          health-check-path: /api/health
-          cpu: '256' # 256 CPU units, or 0.25 vCPU.
-          memory: '512' # 512 MiB, about 0.5GB of memory. Not too much.
-          min-task-count: 1  
-          max-task-count: 1 # Will not scale beyond 1 task
-
-      - name: Show service URL
+      - name: Build, Tag & Push Image
         env:
-          SERVICE_URL: ${{ steps.deploy-express.outputs.endpoint }}
-        run: echo "Backend deployed at $SERVICE_URL"
-
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f my-astro-blog/Dockerfile \
+            -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
+            -t "$ECR_REGISTRY/$ECR_REPOSITORY:latest" \
+            my-astro-blog
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:latest"

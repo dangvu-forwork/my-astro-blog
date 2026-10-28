@@ -1,0 +1,45 @@
+---
+// this code handles ALL the paths except specific ones that I need to implement custom behavior for.
+// to make a specific behavior path, define a folder under pages with the name of the root
+// this will make it easier to work on in the future
+
+import * as lib from "../lib/localLib"
+import { Image } from "astro:assets";
+
+const post = await lib.fetchEntryDynamic(Astro.params.slug);
+
+if (!post) { 
+    return new Response(null, { status: 404 });
+};
+
+const Layout = await lib.fetchLayout(post.data.pageLayout ?? "Contents")
+const Content = await lib.fetchContentFromPost(post)
+const image_title = (post?.data.image_title) ?? undefined;
+
+if (!Layout || !Content){
+    return Astro.redirect("/content/error")
+}
+
+
+---
+
+<Layout title={post?.data.title}>
+	<main>
+        <article>
+            {image_title ? (
+                <header>
+                    <Image src={image_title} alt={"image_title (NOT FOUND)"} id="logo"></Image>
+                </header>
+            ) : (
+                <header class="rkgk-article-header">
+                    <h1 class="rkgk-article-title">{post.data.title}</h1>
+                    <p class="rkgk-article-description">{post.data.description}</p>
+                </header>
+            )}
+            
+            <div class="content">
+                <Content />
+            </div>
+        </article>
+	</main>
+</Layout>

@@ -1,9 +1,9 @@
 ---
-interface Props {
-	title?: string;
-}
+import Toolbar from "../components/Toolbar.astro"
+import Bootstrap from "../components/Bootstrap.astro";
+import Style from "../assets/css/none.css?url";
+const { title = "rkgk / root" } = Astro.props;
 
-const { title = "Astro Blog" } = Astro.props;
 ---
 
 <!doctype html>
@@ -11,24 +11,14 @@ const { title = "Astro Blog" } = Astro.props;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" href="/rkgk_palette.png" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="stylesheet" href={Style}>
 		<title>{title}</title>
 	</head>
 	<body>
+		<Toolbar transition:persist></Toolbar>
 		<slot />
+		<Bootstrap></Bootstrap>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-		font-family: system-ui, sans-serif;
-		color: #17202a;
-		background: #f6f8f7;
-	}
-</style>
