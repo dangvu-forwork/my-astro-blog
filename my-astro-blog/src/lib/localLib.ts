@@ -40,6 +40,25 @@ export async function fetchContentFromPost(post?: RootItem): Promise<RenderResul
     return post ? (await render(post)).Content : undefined
 }
 
+export function fetchItemsInit(files: Record<string, string>){
+    function getItemUrl(filename: string) {
+        const matchingPaths = Object.keys(files).filter((path) =>
+            path === filename || path.endsWith(`/${filename}`)
+        );
+
+        if (matchingPaths.length === 0) {
+            throw new Error(`Item not found: ${filename}`);
+        }
+        if (matchingPaths.length > 1) {
+            throw new Error(`Item filename is ambiguous: ${filename}`);
+        }
+
+        return files[matchingPaths[0]];
+    }
+
+    return getItemUrl;
+}
+
 //
 // general functions below.
 //
