@@ -8,7 +8,7 @@ import path from "node:path";
 const markdownSchema = ({ image }: SchemaContext) => z.object({
 	title: z.string(),
 	description: z.string(),
-	layout: z.string().optional(),
+	pageLayout: z.string().optional(),
 	image_title: image().optional(),
 })
 
