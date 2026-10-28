@@ -88,8 +88,8 @@ article, header, .content {
 }
 
 
-body {
-    background-image: url("/bg.jpg");
+html {
+    background: url("/bg.jpg");
     background-attachment: fixed;
 }
 
