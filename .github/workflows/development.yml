@@ -1,6 +1,7 @@
 name: Deploying to Dev Server
 on:
   pull_request:
+    types: [closed]
     branches: [dev-server]
     paths:
       - "my-astro-blog/**"
