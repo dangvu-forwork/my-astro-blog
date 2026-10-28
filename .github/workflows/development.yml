@@ -21,10 +21,6 @@ jobs:
     env:
       AWS_REGION: us-east-1
       ECR_REPOSITORY: dev-server
-      CDK_STACK_NAME: Dev-ContainerStack
-      DESIRED_COUNT: 1
-      CONTAINER_CPU: 256
-      CONTAINER_MEMORY_MIB: 512
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -47,29 +43,14 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # I should replace the convoluted previous deployment step with this new one
-      # I won't remove the one in deployment.yml since uh what if I make a fatal mistake? i would still need a reference point...
       - name: Build, Tag & Push Image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f my-astro-blog/Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" my-astro-blog
+          docker build -f my-astro-blog/Dockerfile \
+            -t "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
+            -t "$ECR_REGISTRY/$ECR_REPOSITORY:latest" \
+            my-astro-blog
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
-      - name: Set up Node.js for CDK
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: my-astro-blog/cdk/package-lock.json
-
-      - name: Install CDK dependencies
-        working-directory: my-astro-blog/cdk
-        run: npm ci
-
-      - name: Deploy load balancer and ECS service
-        working-directory: my-astro-blog/cdk
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-        run: npx cdk deploy "$CDK_STACK_NAME" --require-approval never --context imageTag="$IMAGE_TAG"
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:latest"

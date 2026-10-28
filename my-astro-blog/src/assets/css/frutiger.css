@@ -118,7 +118,7 @@ html::after {
 }
 .rkgk-img {
     max-width: 95%;
-    max-height: auto;
+    height: auto;
 }
 
 .rkgk-button {

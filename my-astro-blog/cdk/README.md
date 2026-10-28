@@ -34,7 +34,7 @@ CDK must be bootstrapped once per account and region. From this directory, with 
 npx cdk bootstrap aws://765332975113/us-east-1
 ```
 
-The GitHub Actions credentials also need permission to push to ECR and deploy CDK/CloudFormation resources, including IAM roles, VPC networking, ECS, and Elastic Load Balancing.
+The GitHub Actions credentials need permission to describe/create the ECR repository and push images. The credentials used for CDK deployment also need permission to manage CloudFormation, IAM roles, VPC networking, ECS, Elastic Load Balancing, Lambda, and EventBridge.
 
 ### Deploy an image
 
@@ -50,16 +50,36 @@ The app reads these environment variables when creating the container stack:
 | `CONTAINER_MEMORY_MIB` | Memory in MiB per task | `512` |
 | `HEALTH_CHECK_PATH` | ALB health check route | `/api/health` |
 
-Pass the immutable image tag that was pushed to ECR:
+The stack's service uses the mutable `latest` tag. An EventBridge rule listens for a successful push of that tag and invokes a Lambda function to force a new ECS deployment. ECS starts tasks from the new image, and the ALB routes traffic to the healthy tasks. Older commit-SHA-tagged images remain in ECR for rollback but do not continue receiving traffic.
+
+Run this local build-and-push command from the repository root:
 
 ```powershell
-$env:IMAGE_TAG = "<git-commit-sha>"
-$env:CDK_STACK_NAME = "Dev-ContainerStack"
+$env:AWS_REGION = "us-east-1"
 $env:ECR_REPOSITORY = "dev-server"
-npx cdk deploy "$env:CDK_STACK_NAME" --require-approval never --context imageTag="$env:IMAGE_TAG"
+$env:ECR_REGISTRY = "765332975113.dkr.ecr.us-east-1.amazonaws.com"
+$env:IMAGE_TAG = "$(git rev-parse --short HEAD)-$(Get-Date -Format yyyyMMddHHmmss)"
+
+aws ecr get-login-password --region $env:AWS_REGION | docker login --username AWS --password-stdin $env:ECR_REGISTRY
+
+docker buildx build --platform linux/amd64 --push `
+  -f my-astro-blog/Dockerfile `
+  --tag "$($env:ECR_REGISTRY)/$($env:ECR_REPOSITORY):$($env:IMAGE_TAG)" `
+  --tag "$($env:ECR_REGISTRY)/$($env:ECR_REPOSITORY):latest" `
+  my-astro-blog
 ```
 
-The development GitHub Actions workflow builds and pushes the commit-SHA-tagged image, then deploys this stack using that same tag. Its configuration variables are grouped in the job-level `env` section of `development.yml`.
+The command pushes both a unique tag and `latest` directly to ECR without storing the built image in the local Docker image store. The development GitHub Actions workflow does the same on pushes to the `dev-server` branch. ECR retains the unique tags for older images.
+
+After the updated workflow has pushed a `latest` image, deploy the CDK stack once from this directory to add the ECR push trigger and move the service to `latest`:
+
+```powershell
+$env:CDK_STACK_NAME = "Dev-ContainerStack"
+$env:IMAGE_TAG = "latest"
+npx cdk deploy "$env:CDK_STACK_NAME" --require-approval never
+```
+
+For manual rollback, use an earlier unique image tag to update the service's task definition. Keep the stack name unchanged so CDK updates the existing service and load balancer.
 
 To deploy a separate production service, instantiate `ContainerServiceStack` again in `bin/cdk.ts` with a distinct ID and production values, for example:
 
